@@ -1,6 +1,9 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const boardRouter = require("./routes/boards");
+
+app.use(cors());
 
 app.use("/api/boards", boardRouter);
 
