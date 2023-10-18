@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prestart": "npm install",
     "start": "npm-run-all --parallel start:**",
-    "start:server": "cd server && nodemon server",
-    "start:client": "cd client && npm run dev"
+    "start:server": "cd server && npm run start",
+    "start:client": "cd client && npm run start"
   },
   "author": "",
   "license": "ISC",
