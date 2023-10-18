@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const test = require("./Router/test");
+const test = require("./routes/test");
 
 app.use("/api", test);
 
