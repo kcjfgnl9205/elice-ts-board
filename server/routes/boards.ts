@@ -1,10 +1,22 @@
-import { Request, Response } from "express";
+import express from "express";
 
-const express = require("express");
+import boardsController from "../controllers/boards.controller";
+
 const router = express.Router();
 
-router.get("/", (req: Request, res: Response) => {
-  res.send("hi");
-});
+// 게시판 목록
+router.get("/", boardsController.list);
 
-module.exports = router;
+// 게시판 상세
+router.get("/:id", boardsController.read);
+
+// 게시판 등록
+router.post("/", boardsController.create);
+
+// 게시판 수정
+router.put("/:id", boardsController.update);
+
+// 게시판 삭제
+router.delete("/:id", boardsController.remove);
+
+export default router;

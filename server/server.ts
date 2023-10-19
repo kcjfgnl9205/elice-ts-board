@@ -1,6 +1,13 @@
-const express = require("express");
+import express from "express";
+import cors from "cors";
+
+import boardRouter from "./routes/boards";
+
 const app = express();
-const boardRouter = require("./routes/boards");
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/boards", boardRouter);
 
