@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
@@ -19,6 +19,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/boards", boardRouter);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  res.status(500);
+  res.json({
+    status: "error",
+    message: err.message
+  })
+})
 
 const port = 3002; //node 서버가 사용할 포트 번호, 리액트의 포트번호(3000)와 충돌하지 않게 다른 번호로 할당
 app.listen(port, () => {
