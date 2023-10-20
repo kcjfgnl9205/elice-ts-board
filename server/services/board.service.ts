@@ -28,24 +28,27 @@ const listBoards = async (query: any) => {
   }
 };
 
-const readBoard = async (params: any): Promise<SafeBoard> => {
+const readBoard = async (params: any) => {
   const { id } = params;
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const data = items.map((el) => {
-                          return {
-                            ...el,
-                            createdAt: el.createdAt.getTime(),
-                            updatedAt: el.updatedAt?.getTime() ?? null,
-                          };
-                        })
-                        .find((item) => item.id === id);
+  try {
+    if (!id) {
+      throw new Error("입력하신 ID가 존재하지 않습니다.");
+    }
 
-      if (data) {
-        resolve(data);
+    const item = await BoardModal.findById(id).exec();
+    if (item) {
+      const data: SafeBoard = {
+        ...item.toObject(),
+        createdAt: item.toObject().createdAt.getTime(),
+        updatedAt: item.toObject().updatedAt?.getTime() ?? null
       }
-    }, DEFAULT_TIMEOUT);
-  });
+      return data;
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
 };
 
 const createBoard = async (body: any): Promise<Status> => {
