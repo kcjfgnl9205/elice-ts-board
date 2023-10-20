@@ -1,9 +1,18 @@
 import express from "express";
 import cors from "cors";
+import "dotenv/config";
+import mongoose from "mongoose";
+const { MONGO_USER, MONGO_PASS } = process.env;
 
 import boardRouter from "./routes/boards";
 
 const app = express();
+
+mongoose.connect(`mongodb+srv://${MONGO_USER}:${MONGO_PASS}@cluster0.ovxszja.mongodb.net/?retryWrites=true&w=majority`);
+
+mongoose.connection.on("connected", () => {
+  console.log("Successfully connected to MongoDB");
+});
 
 app.use(cors());
 app.use(express.json());
