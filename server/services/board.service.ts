@@ -75,12 +75,23 @@ const createBoard = async (body: any) => {
   }
 };
 
-const updateBoard = async (id: any, body: any): Promise<Status> => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({ status: "success", message: "성공" });
-    }, DEFAULT_TIMEOUT);
-  });
+const updateBoard = async (id: string, body: any) => {
+  try {
+    const { title, content } = body;
+    if (!title) throw new Error("제목이 존재하지 않습니다.");
+    if (!content) throw new Error("내용이 존재하지 않습니다.");
+
+    const res = await BoardModal.updateOne({ _id: id }, { title, content });
+    if (res.modifiedCount === 0) {
+      return { status: "error", message: "게시글을 찾을 수 없거나 업데이트되지 않았습니다." };
+    }
+
+    return { status: "success", message: "게시글 수정 성공!!!" };
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
 };
 
 const deleteBoard = async (id: any): Promise<Status> => {
