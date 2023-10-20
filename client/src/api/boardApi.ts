@@ -27,3 +27,16 @@ export const getBoardById = async (id: string) => {
     }
   }
 };
+
+export const removeBoardById = async (id: string) => {
+  try {
+    const response = await axios.delete(
+      `${import.meta.env.VITE_BASE_URL}/api/boards/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.message);
+    }
+  }
+};

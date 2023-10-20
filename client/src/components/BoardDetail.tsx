@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getBoardById } from "../api/boardApi";
+import { useParams, useNavigate } from "react-router-dom";
+import { getBoardById, removeBoardById } from "../api/boardApi";
 import { Board } from "../types";
 
 const BoardDetail = () => {
@@ -8,6 +8,7 @@ const BoardDetail = () => {
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -25,6 +26,23 @@ const BoardDetail = () => {
       });
   }, []);
 
+  const handleRemove = () => {
+    if (!id) return;
+    removeBoardById(id)
+      .then((data) => {
+        if (data.status === "success") {
+          alert("삭제되었습니다.");
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        console.error(
+          `게시물을 삭제하는 중 오류가 발생했습니다. (${err.message})`
+        );
+        setError(err.message);
+      });
+  };
+
   if (error)
     return <div>게시물을 불러오는 중 오류가 발생했습니다. ({error})</div>;
 
@@ -39,7 +57,7 @@ const BoardDetail = () => {
       <div>{board.content}</div>
       <div>{board.createdAt}</div>
       <button>수정</button>
-      <button>삭제</button>
+      <button onClick={handleRemove}>삭제</button>
     </section>
   );
 };
