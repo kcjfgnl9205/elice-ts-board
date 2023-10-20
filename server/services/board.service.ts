@@ -1,12 +1,5 @@
-import { DEFAULT_TIMEOUT } from "../constants/constant";
 import { BoardModal } from "../models";
 import { Board, Status, SafeBoard, SafeBoards } from "../types/types";
-
-let items: Board[] = [
-  {id: "1", title: "title1", content: "content1", username:"name1", createdAt: new Date(), updatedAt: new Date()},
-  {id: "2", title: "title2", content: "content2", username:"name2", createdAt: new Date(), updatedAt: new Date()},
-  {id: "3", title: "title3", content: "content3", username:"name3", createdAt: new Date(), updatedAt: new Date()},
-]
 
 const listBoards = async (query: any) => {
   try {
