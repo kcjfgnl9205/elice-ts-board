@@ -13,6 +13,7 @@ function App() {
         <Route path="/" element={<BoardList />} />
         <Route path="/boards/:id" element={<BoardDetail />} />
         <Route path="/boards/write" element={<BoardWrite />} />
+        <Route path="/boards/:id/edit" element={<BoardWrite editMode />} />
       </Routes>
       <BoardFooter />
     </>

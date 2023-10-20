@@ -1,13 +1,30 @@
-import { useState } from "react";
-import { createBoard } from "../api/boardApi";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { createBoard, updateBoard } from "../api/boardApi";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const BoardWrite = () => {
+type Props = {
+  editMode?: boolean;
+};
+
+// Fixme : 수정 & 생성 로직 리펙토링 필요
+const BoardWrite = ({ editMode }: Props) => {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
   });
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Fixme : 로직 수정 필요
+  useEffect(() => {
+    if (editMode) {
+      const board = location.state.board;
+      setFormData({
+        title: board.title,
+        content: board.content,
+      });
+    }
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -16,7 +33,7 @@ const BoardWrite = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     createBoard(formData)
       .then((data) => {
@@ -32,18 +49,48 @@ const BoardWrite = () => {
       });
     return;
   };
+
+  const handleCreate = (e: React.FormEvent<HTMLButtonElement>) => {
+    handleSubmit(e);
+  };
+
+  // Fixme : 로직 수정 필요
+  const handleEdit = () => {
+    updateBoard(formData).then((data) => {
+      if (data.status === "success") {
+        alert("수정되었습니다.");
+        navigate(`/boards/${location.state.board.id}`);
+      }
+    });
+  };
+
   return (
     <>
       <h1>BoardWrite</h1>
-      <form onSubmit={handleSubmit}>
+      <form>
         <label htmlFor="title">제목</label>
-        <input onChange={handleChange} type="text" id="title" name="title" />
+        <input
+          onChange={handleChange}
+          type="text"
+          id="title"
+          name="title"
+          value={formData.title}
+        />
         <br />
         <label htmlFor="content">내용</label>
-        <textarea onChange={handleChange} id="content" name="content" />
+        <textarea
+          onChange={handleChange}
+          id="content"
+          name="content"
+          value={formData.content}
+        />
         <br />
-        <button>생성</button>
       </form>
+      {editMode ? (
+        <button onClick={handleEdit}>수정</button>
+      ) : (
+        <button onClick={handleCreate}>생성</button>
+      )}
     </>
   );
 };

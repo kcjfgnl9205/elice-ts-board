@@ -43,6 +43,12 @@ const BoardDetail = () => {
       });
   };
 
+  // Go to BoardWrite.tsx
+  const handleEdit = () => {
+    if (!id) return;
+    navigate(`/boards/${id}/edit`, { state: { board } });
+  };
+
   if (error)
     return <div>게시물을 불러오는 중 오류가 발생했습니다. ({error})</div>;
 
@@ -56,7 +62,7 @@ const BoardDetail = () => {
       <div>{board.username}</div>
       <div>{board.content}</div>
       <div>{board.createdAt}</div>
-      <button>수정</button>
+      <button onClick={handleEdit}>수정</button>
       <button onClick={handleRemove}>삭제</button>
     </section>
   );

@@ -60,3 +60,17 @@ export const removeBoardById = async (id: string) => {
     }
   }
 };
+
+export const updateBoard = async (formData: Partial<Board>) => {
+  try {
+    const response = await axios.put(
+      `${import.meta.env.VITE_BASE_URL}/api/boards/${formData.id}`,
+      formData
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.message);
+    }
+  }
+};
