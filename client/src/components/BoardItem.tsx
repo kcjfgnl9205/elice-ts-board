@@ -1,5 +1,5 @@
 import { Board } from "../types";
-
+import { Link } from "react-router-dom";
 type Props = {
   board: Board;
 };
@@ -7,9 +7,9 @@ type Props = {
 const BoardItem = ({ board }: Props) => {
   return (
     <>
-      <div>
+      <div style={{ display: "flex" }}>
         <div>{board.id}</div>
-        <div>{board.title}</div>
+        <Link to={`/boards/${board.id}`}>{board.title}</Link>
         <div>{board.username}</div>
         <div>{board.createdAt}</div>
       </div>
