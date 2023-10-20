@@ -94,12 +94,19 @@ const updateBoard = async (id: string, body: any) => {
   }
 };
 
-const deleteBoard = async (id: any): Promise<Status> => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({ status: "success", message: "성공" });
-    }, DEFAULT_TIMEOUT);
-  });
+const deleteBoard = async (id: string) => {
+  try {
+    const res = await BoardModal.findByIdAndDelete({ _id: id });
+    if (!res) {
+      return { status: "error", message: "삭제할 게시글이 존재하지 않습니다." };
+    }
+
+    return { status: "success", message: "게시판 삭제 성공!!!" };
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
 };
 
 
