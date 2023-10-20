@@ -1,4 +1,5 @@
 import { DEFAULT_TIMEOUT } from "../constants/constant";
+import { BoardModal } from "../models";
 import { Board, Status, SafeBoard, SafeBoards } from "../types/types";
 
 let items: Board[] = [
@@ -7,22 +8,24 @@ let items: Board[] = [
   {id: "3", title: "title3", content: "content3", username:"name3", createdAt: new Date(), updatedAt: new Date()},
 ]
 
-const listBoards = async (query: any): Promise<SafeBoards> => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      let data = items.map((el) => {
-                        const { content, ...res } = el;
-                        return {
-                          ...res,
-                          createdAt: el.createdAt.getTime(),
-                          updatedAt: el.updatedAt.getTime(),
-                        };
-                      });
-      if (data) {
-        resolve(data);
-      }
-    }, DEFAULT_TIMEOUT);
-  });
+const listBoards = async (query: any) => {
+  try {
+    const items = await BoardModal.find({}).exec();
+    return items.map((item) => {
+      const { content, ...res } = item.toObject();
+      const data: Omit<SafeBoard, "content"> = {
+        ...res,
+        id: res.id,
+        createdAt: item.createdAt.getTime(),
+        updatedAt: item.updatedAt?.getTime() ?? null,
+      };
+      return data;
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
 };
 
 const readBoard = async (params: any): Promise<SafeBoard> => {
@@ -33,7 +36,7 @@ const readBoard = async (params: any): Promise<SafeBoard> => {
                           return {
                             ...el,
                             createdAt: el.createdAt.getTime(),
-                            updatedAt: el.updatedAt.getTime(),
+                            updatedAt: el.updatedAt?.getTime() ?? null,
                           };
                         })
                         .find((item) => item.id === id);
