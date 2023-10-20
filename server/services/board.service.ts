@@ -51,12 +51,28 @@ const readBoard = async (params: any) => {
   }
 };
 
-const createBoard = async (body: any): Promise<Status> => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({ status: "success", message: "성공" });
-    }, DEFAULT_TIMEOUT);
-  });
+const createBoard = async (body: any) => {
+  try {
+    const { title, content, username } = body;
+    if (!title) throw new Error("제목이 존재하지 않습니다.");
+    if (!content) throw new Error("내용이 존재하지 않습니다.");
+
+    const boardModal = new BoardModal({
+      title,
+      content,
+      username: username ?? "admin"
+    });
+
+    const data = await boardModal.save();
+    if (data) {
+      const res: Status = { status: "success", message: "게시글 작성 성공!!!" };
+      return res;
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
 };
 
 const updateBoard = async (id: any, body: any): Promise<Status> => {
