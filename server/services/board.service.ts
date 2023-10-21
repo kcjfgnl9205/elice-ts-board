@@ -1,5 +1,7 @@
+import { Types } from "mongoose";
 import { BoardModal } from "../models";
 import { Board, Status, SafeBoard, SafeBoards } from "../types/types";
+import CustomError from "../utils/CustomError";
 
 const listBoards = async (query: any) => {
   try {
@@ -15,8 +17,8 @@ const listBoards = async (query: any) => {
       return data;
     });
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
+    if (error instanceof CustomError) {
+      throw new CustomError(error.message, error.statusCode);
     }
   }
 };
@@ -24,8 +26,8 @@ const listBoards = async (query: any) => {
 const readBoard = async (params: any) => {
   const { id } = params;
   try {
-    if (!id) {
-      throw new Error("입력하신 ID가 존재하지 않습니다.");
+    if (!Types.ObjectId.isValid(id)) {
+      throw new CustomError("유효하지 않은 아이디 형식 입니다.", 404);
     }
 
     const item = await BoardModal.findById(id).exec();
@@ -39,8 +41,8 @@ const readBoard = async (params: any) => {
       return data;
     }
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
+    if (error instanceof CustomError) {
+      throw new CustomError(error.message, error.statusCode);
     }
   }
 };
@@ -48,8 +50,8 @@ const readBoard = async (params: any) => {
 const createBoard = async (body: any) => {
   try {
     const { title, content, username } = body;
-    if (!title) throw new Error("제목이 존재하지 않습니다.");
-    if (!content) throw new Error("내용이 존재하지 않습니다.");
+    if (!title) throw new CustomError("제목을 입력해 주세요.", 400);
+    if (!content) throw new CustomError("내용을 입력해 주세요.", 400);
 
     const boardModal = new BoardModal({
       title,
@@ -63,42 +65,50 @@ const createBoard = async (body: any) => {
       return res;
     }
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
+    if (error instanceof CustomError) {
+      throw new CustomError(error.message, error.statusCode);
     }
   }
 };
 
 const updateBoard = async (id: string, body: any) => {
   try {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new CustomError("유효하지 않은 아이디 형식입니다.", 404);
+    }
+
     const { title, content } = body;
-    if (!title) throw new Error("제목이 존재하지 않습니다.");
-    if (!content) throw new Error("내용이 존재하지 않습니다.");
+    if (!title) throw new CustomError("제목을 입력해 주세요.", 400);
+    if (!content) throw new CustomError("내용을 입력해 주세요.", 400);
 
     const res = await BoardModal.updateOne({ _id: id }, { title, content });
     if (res.modifiedCount === 0) {
-      return { status: "error", message: "게시글을 찾을 수 없거나 업데이트되지 않았습니다." };
+      throw new CustomError("게시글을 찾을 수 없거나 업데이트되지 않았습니다.", 404);
     }
 
     return { status: "success", message: "게시글 수정 성공!!!" };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
+    if (error instanceof CustomError) {
+      throw new CustomError(error.message, error.statusCode);
     }
   }
 };
 
 const deleteBoard = async (id: string) => {
   try {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new CustomError("유효하지 않은 아이디 형식입니다.", 404);
+    }
+
     const res = await BoardModal.findByIdAndDelete({ _id: id });
     if (!res) {
-      return { status: "error", message: "삭제할 게시글이 존재하지 않습니다." };
+      throw new CustomError("삭제할 게시글이 존재하지 않습니다.", 400);
     }
 
     return { status: "success", message: "게시판 삭제 성공!!!" };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
+    if (error instanceof CustomError) {
+      throw new CustomError(error.message, error.statusCode);
     }
   }
 };

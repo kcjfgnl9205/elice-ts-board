@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 const { MONGO_USER, MONGO_PASS } = process.env;
 
 import boardRouter from "./routes/boards";
+import CustomError from "./utils/CustomError";
+
 
 const app = express();
 
@@ -20,8 +22,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/boards", boardRouter);
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  res.status(500);
+app.use((err: CustomError, req: Request, res: Response, next: NextFunction) => {
+  const statusCode = err.statusCode ?? 500;
+  res.status(statusCode);
   res.json({
     status: "error",
     message: err.message
