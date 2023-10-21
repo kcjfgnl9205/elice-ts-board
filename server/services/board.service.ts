@@ -8,7 +8,7 @@ const listBoards = async (query: any) => {
       const { content, ...res } = item.toObject();
       const data: Omit<SafeBoard, "content"> = {
         ...res,
-        id: res.id,
+        id: res._id.toString(),
         createdAt: item.createdAt.getTime(),
         updatedAt: item.updatedAt?.getTime() ?? null,
       };
@@ -32,6 +32,7 @@ const readBoard = async (params: any) => {
     if (item) {
       const data: SafeBoard = {
         ...item.toObject(),
+        id: item._id.toString(),
         createdAt: item.toObject().createdAt.getTime(),
         updatedAt: item.toObject().updatedAt?.getTime() ?? null
       }
