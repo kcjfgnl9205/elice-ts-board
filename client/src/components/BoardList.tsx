@@ -3,6 +3,7 @@ import { Board } from "../types";
 import BoardItem from "./BoardItem";
 import { getBoardList } from "../api/boardApi";
 import BoardSearch from "./BoardSearch";
+import Filter from "./Filter";
 
 const BoardList = () => {
   const [boards, setBoards] = useState<Board[]>([]);
@@ -36,7 +37,8 @@ const BoardList = () => {
         <h1 className="text-2xl font-bold mb-5">게시판 리스트</h1>
         <div className="flex justify-between items-center mb-2 ">
           <p>게시물 수: {boards.length}</p>
-          <p>정렬: 최신순</p>
+          {/* <p>정렬: 최신순</p> */}
+          <Filter />
         </div>
 
         <div className="border-b p-4 bg-purple-500 text-white font-bold">
