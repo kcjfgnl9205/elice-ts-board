@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
 import boardService from "../services/board.service";
+import { ReqBody, ResBody, ReqParams, ReqQuery } from "../types/types";
 
-type ControllerFunction = (req: Request, res: Response, next: NextFunction) => void;
+type ControllerFunction = (req: Request<ReqParams, ResBody, ReqBody, ReqQuery>, res: Response, next: NextFunction) => void;
 
 // 게시판 목록
 const list: ControllerFunction = async (req, res, next) => {
