@@ -1,5 +1,6 @@
 import axios from "axios";
-import { Board } from "../types";
+import { Board, Boards } from "../types";
+import { formatData } from "../utils/common";
 
 const customError = (error: unknown) => {
   if (axios.isAxiosError(error)) {
@@ -19,7 +20,20 @@ export const getBoardList = async () => {
     const response = await axios.get(
       `${import.meta.env.VITE_BASE_URL}/api/boards`
     );
-    return response.data;
+
+    const data = response.data.map((board: Board) => {
+      const { createdAt, updatedAt } = board;
+      const createdAtFormatedDate = formatData(createdAt);
+      const updatedAtFormatedDate = formatData(updatedAt);
+
+      return {
+        ...board,
+        createdAt: createdAtFormatedDate,
+        updatedAt: updatedAtFormatedDate,
+      };
+    });
+
+    return data;
   } catch (error) {
     customError(error);
   }
@@ -31,7 +45,16 @@ export const getBoardById = async (id: string) => {
     const response = await axios.get(
       `${import.meta.env.VITE_BASE_URL}/api/boards/${id}`
     );
-    return response.data;
+
+    const data = response.data;
+    const { createdAt, updatedAt } = data;
+    const newData = {
+      ...data,
+      createdAt: formatData(createdAt, "detail"),
+      updatedAt: formatData(updatedAt, "detail"),
+    };
+
+    return newData;
   } catch (error) {
     customError(error);
   }

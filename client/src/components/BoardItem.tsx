@@ -7,8 +7,7 @@ type Props = {
 
 const BoardItem = ({ board, idx }: Props) => {
   const { id, title, username, createdAt, updatedAt } = board;
-  const date = new Date(createdAt).toLocaleTimeString();
-  const updateAt = updatedAt && new Date(updatedAt).toLocaleTimeString();
+
   return (
     <div className="border-b p-4 hover:bg-purple-200 text-center">
       <div className="flex items-center">
@@ -17,9 +16,9 @@ const BoardItem = ({ board, idx }: Props) => {
           {title}
         </Link>
         <div className="mx-4 w-24">{username}</div>
-        <div className="mx-3 w-24 text-gray-400">{date}</div>
+        <div className="mx-3 w-24 text-gray-400">{createdAt}</div>
         <div className="mx-3 w-24 text-gray-400">
-          {updateAt ? updateAt : "-"}
+          {updatedAt ? updatedAt : "-"}
         </div>
       </div>
     </div>
