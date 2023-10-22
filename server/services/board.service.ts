@@ -81,7 +81,7 @@ const updateBoard = async (id: string, body: any) => {
     if (!title) throw new CustomError("제목을 입력해 주세요.", 400);
     if (!content) throw new CustomError("내용을 입력해 주세요.", 400);
 
-    const res = await BoardModal.updateOne({ _id: id }, { title, content });
+    const res = await BoardModal.updateOne({ _id: id }, { title, content, updatedAt: new Date() });
     if (res.modifiedCount === 0) {
       throw new CustomError("게시글을 찾을 수 없거나 업데이트되지 않았습니다.", 404);
     }
