@@ -22,3 +22,18 @@ export type Status = {
   status: "success" | "error";
   message: string;
 };
+
+// 게시판 request, response타입
+export interface ReqParams {
+  id: string;
+}
+
+export interface ReqBody {
+  title: string;
+  content: string;
+  username?: string;
+}
+
+export interface ResBody { }
+
+export interface ReqQuery { }

@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
 import { BoardModal } from "../models";
-import { Board, Status, SafeBoard, SafeBoards } from "../types/types";
+import { Status, SafeBoard, ReqQuery, ReqParams, ReqBody } from "../types/types";
 import CustomError from "../utils/CustomError";
 
-const listBoards = async (query: any) => {
+const listBoards = async (query: ReqQuery) => {
   try {
     const items = await BoardModal.find({}).exec();
     return items.map((item) => {
@@ -23,7 +23,7 @@ const listBoards = async (query: any) => {
   }
 };
 
-const readBoard = async (params: any) => {
+const readBoard = async (params: ReqParams) => {
   const { id } = params;
   try {
     if (!Types.ObjectId.isValid(id)) {
@@ -47,7 +47,7 @@ const readBoard = async (params: any) => {
   }
 };
 
-const createBoard = async (body: any) => {
+const createBoard = async (body: ReqBody) => {
   try {
     const { title, content, username } = body;
     if (!title) throw new CustomError("제목을 입력해 주세요.", 400);
@@ -71,7 +71,7 @@ const createBoard = async (body: any) => {
   }
 };
 
-const updateBoard = async (id: string, body: any) => {
+const updateBoard = async (id: string, body: ReqBody) => {
   try {
     if (!Types.ObjectId.isValid(id)) {
       throw new CustomError("유효하지 않은 아이디 형식입니다.", 404);
