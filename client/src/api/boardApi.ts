@@ -74,7 +74,7 @@ export const removeBoardById = async (id: string) => {
 export const updateBoard = async (id: string, formData: Partial<Board>) => {
   try {
     const response = await axios.put(
-      `${import.meta.env.VITE_BASE_URL}/api/board/${id}`,
+      `${import.meta.env.VITE_BASE_URL}/api/boards/${id}`,
       formData
     );
     return response.data;
