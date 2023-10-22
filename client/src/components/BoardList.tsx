@@ -34,9 +34,27 @@ const BoardList = () => {
 
   return (
     <>
-      {boards.map((board) => (
-        <BoardItem key={board.id} board={board} />
-      ))}
+      <div className="mx-auto">
+        <h1 className="text-2xl font-bold mb-5">게시판 리스트</h1>
+        <div className="flex justify-between items-center mb-2 ">
+          <p>게시물 수: {boards.length}</p>
+          <p>정렬: 최신순</p>
+        </div>
+
+        <div className="border-b p-4 bg-purple-500 text-white font-bold">
+          <div className="flex items-center text-center">
+            <div className="mr-4 w-20">번호</div>
+            <div className="flex-grow">제목</div>
+            <div className="mx-4 w-24">닉네임</div>
+            <div className="mx-3 w-24">게시 날짜</div>
+            <div className="mx-3 w-24">수정 날짜</div>
+          </div>
+        </div>
+
+        {boards.map((board) => (
+          <BoardItem key={board.id} board={board} />
+        ))}
+      </div>
     </>
   );
 };

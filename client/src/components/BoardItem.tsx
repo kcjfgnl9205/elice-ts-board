@@ -5,15 +5,21 @@ type Props = {
 };
 
 const BoardItem = ({ board }: Props) => {
+  const { id, title, username, createdAt } = board;
+  const date = new Date(createdAt).toLocaleDateString();
+  const updateAt = new Date(createdAt).toLocaleDateString();
   return (
-    <>
-      <div style={{ display: "flex" }}>
-        <div>{board.id}</div>
-        <Link to={`/boards/${board.id}`}>{board.title}</Link>
-        <div>{board.username}</div>
-        <div>{board.createdAt}</div>
+    <div className="border-b p-4 hover:bg-purple-200 text-center">
+      <div className="flex items-center">
+        <div className="mr-4 w-20">{id}</div>
+        <Link className="flex-grow" to={`/boards/${id}`}>
+          {title}
+        </Link>
+        <div className="mx-4 w-24">{username}</div>
+        <div className="mx-3 w-24 text-gray-400">{date}</div>
+        <div className="mx-3 w-24 text-gray-400">{updateAt}</div>
       </div>
-    </>
+    </div>
   );
 };
 

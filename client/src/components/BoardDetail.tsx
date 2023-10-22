@@ -56,15 +56,33 @@ const BoardDetail = () => {
 
   if (!board) return <div>게시물이 없습니다.</div>;
 
+  const { title, username, content, createdAt } = board;
+  const date = new Date(createdAt);
   return (
-    <section>
-      <h1>{board.title}</h1>
-      <div>{board.username}</div>
-      <div>{board.content}</div>
-      <div>{board.createdAt}</div>
-      <button onClick={handleEdit}>수정</button>
-      <button onClick={handleRemove}>삭제</button>
-    </section>
+    <>
+      <div className="mx-auto h-full">
+        <div className="flex flex-col h-full">
+          <h1 className="text-4xl font-bold ">{title}</h1>
+          <div className="mb-5 text-gray-400">by {username}</div>
+          <div className="flex-grow text-2xl">{content}</div>
+          <div>{date.toLocaleString()}</div>
+          <div>
+            <button
+              className=" bg-blue-500 text-white w-1/2"
+              onClick={handleEdit}
+            >
+              수정
+            </button>
+            <button
+              className=" bg-red-500 text-white w-1/2"
+              onClick={handleRemove}
+            >
+              삭제
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

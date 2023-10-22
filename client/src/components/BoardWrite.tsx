@@ -66,30 +66,44 @@ const BoardWrite = ({ editMode }: Props) => {
 
   return (
     <>
-      <h1>BoardWrite</h1>
+      <h1 className="text-2xl font-bold mb-5">
+        {editMode ? "게시판 수정" : "게시판 생성"}
+      </h1>
       <form>
-        <label htmlFor="title">제목</label>
-        <input
-          onChange={handleChange}
-          type="text"
-          id="title"
-          name="title"
-          value={formData.title}
-        />
-        <br />
-        <label htmlFor="content">내용</label>
-        <textarea
-          onChange={handleChange}
-          id="content"
-          name="content"
-          value={formData.content}
-        />
-        <br />
+        <div className="flex mb-6">
+          <label className="mr-2" htmlFor="title">
+            제목
+          </label>
+          <input
+            className="flex-grow"
+            onChange={handleChange}
+            type="text"
+            id="title"
+            name="title"
+            value={formData.title}
+          />
+        </div>
+        <div className="flex mb-6">
+          <label className="mr-2" htmlFor="content">
+            내용
+          </label>
+          <textarea
+            className="flex-grow"
+            onChange={handleChange}
+            id="content"
+            name="content"
+            value={formData.content}
+          />
+        </div>
       </form>
       {editMode ? (
-        <button onClick={handleEdit}>수정</button>
+        <button className="bg-blue-500 text-white " onClick={handleEdit}>
+          수정
+        </button>
       ) : (
-        <button onClick={handleCreate}>생성</button>
+        <button className="bg-blue-500 text-white" onClick={handleCreate}>
+          생성
+        </button>
       )}
     </>
   );
