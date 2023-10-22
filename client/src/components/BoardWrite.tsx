@@ -11,17 +11,20 @@ const BoardWrite = ({ editMode }: Props) => {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
+    username: "",
   });
   const navigate = useNavigate();
   const location = useLocation();
 
   // Fixme : 로직 수정 필요
   useEffect(() => {
+    // Edit Mode 일 때
     if (editMode) {
       const board = location.state.board;
       setFormData({
         title: board.title,
         content: board.content,
+        username: board.username,
       });
     }
   }, []);
@@ -38,15 +41,11 @@ const BoardWrite = ({ editMode }: Props) => {
     createBoard(formData)
       .then((data) => {
         if (data.status === "success") {
-          alert("생성되었습니다.");
+          alert(data.message);
           navigate("/");
         }
       })
-      .catch((err) => {
-        console.error(
-          `게시물을 생성하는 중 오류가 발생했습니다. (${err.message})`
-        );
-      });
+      .catch(alert);
     return;
   };
 
@@ -56,12 +55,15 @@ const BoardWrite = ({ editMode }: Props) => {
 
   // Fixme : 로직 수정 필요
   const handleEdit = () => {
-    updateBoard(formData).then((data) => {
-      if (data.status === "success") {
-        alert("수정되었습니다.");
-        navigate(`/boards/${location.state.board.id}`);
-      }
-    });
+    const board = location.state.board;
+    updateBoard(board.id, formData)
+      .then((data) => {
+        if (data.status === "success") {
+          alert(data.message);
+          navigate(`/boards/${board.id}`);
+        }
+      })
+      .catch(alert);
   };
 
   return (
@@ -84,7 +86,21 @@ const BoardWrite = ({ editMode }: Props) => {
           />
         </div>
         <div className="flex mb-6">
-          <label className="mr-2" htmlFor="content">
+          <label className="mr-2" htmlFor="username">
+            이름
+          </label>
+          <input
+            className="flex-grow"
+            onChange={handleChange}
+            type="text"
+            id="username"
+            name="username"
+            value={formData.username}
+          />
+        </div>
+
+        <div className="flex mb-6">
+          <label className="mr-2 " htmlFor="content">
             내용
           </label>
           <textarea
