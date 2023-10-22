@@ -18,11 +18,8 @@ const BoardDetail = () => {
         setBoard(board);
         setLoading(false);
       })
-      .catch((error) => {
-        console.error(
-          `게시물을 불러오는 중 오류가 발생했습니다. (${error.message})`
-        );
-        setError(error.message);
+      .catch((err) => {
+        setError(err.message);
       });
   }, []);
 
@@ -31,16 +28,11 @@ const BoardDetail = () => {
     removeBoardById(id)
       .then((data) => {
         if (data.status === "success") {
-          alert("삭제되었습니다.");
+          alert(data.message);
           navigate("/");
         }
       })
-      .catch((err) => {
-        console.error(
-          `게시물을 삭제하는 중 오류가 발생했습니다. (${err.message})`
-        );
-        setError(err.message);
-      });
+      .catch(alert);
   };
 
   // Go to BoardWrite.tsx

@@ -4,6 +4,7 @@ export type Board = {
   content: string;
   username: string;
   createdAt: number;
+  updatedAt: number | null;
 };
 
 export type Boards = Board[];

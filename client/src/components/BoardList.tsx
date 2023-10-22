@@ -15,11 +15,8 @@ const BoardList = () => {
         setBoards(boardList);
         setLoading(false);
       })
-      .catch((error) => {
-        console.error(
-          `게시판 리스트를 불러오는 중 오류가 발생했습니다. (${error.message})`
-        );
-        setError(error.message);
+      .catch((err) => {
+        setError(err.message);
       });
   }, []);
 
@@ -51,8 +48,8 @@ const BoardList = () => {
           </div>
         </div>
 
-        {boards.map((board) => (
-          <BoardItem key={board.id} board={board} />
+        {boards.map((board, idx) => (
+          <BoardItem key={board.id} board={board} idx={++idx} />
         ))}
       </div>
     </>
