@@ -56,7 +56,7 @@ const createBoard = async (body: ReqBody) => {
     const boardModal = new BoardModal({
       title,
       content,
-      username: username ?? "admin"
+      username: username || "admin"
     });
 
     const data = await boardModal.save();
