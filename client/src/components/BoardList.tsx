@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Board } from "../types";
 import BoardItem from "./BoardItem";
 import { getBoardList } from "../api/boardApi";
+import BoardSearch from "./BoardSearch";
 
 const BoardList = () => {
   const [boards, setBoards] = useState<Board[]>([]);
@@ -48,9 +49,12 @@ const BoardList = () => {
           </div>
         </div>
 
-        {boards.map((board, idx) => (
-          <BoardItem key={board.id} board={board} idx={++idx} />
-        ))}
+        <div className="mb-5">
+          {boards.map((board, idx) => (
+            <BoardItem key={board.id} board={board} idx={++idx} />
+          ))}
+        </div>
+        <BoardSearch />
       </div>
     </>
   );
