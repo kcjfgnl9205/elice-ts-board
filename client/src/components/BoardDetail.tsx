@@ -48,16 +48,22 @@ const BoardDetail = () => {
 
   if (!board) return <div>게시물이 없습니다.</div>;
 
-  const { title, username, content, createdAt } = board;
-  const date = new Date(createdAt);
+  const { title, username, content, createdAt, updatedAt } = board;
   return (
     <>
       <div className="mx-auto h-full">
         <div className="flex flex-col h-full">
-          <h1 className="text-4xl font-bold ">{title}</h1>
+          <div className="flex justify-between items-end">
+            <h1 className="text-4xl font-bold ">{title}</h1>
+            <div className=" text-gray-400">{createdAt}</div>
+          </div>
           <div className="mb-5 text-gray-400">by {username}</div>
           <div className="flex-grow text-2xl">{content}</div>
-          <div>{date.toLocaleString()}</div>
+          {updatedAt ? (
+            <div className="text-gray-400">수정 됨 - {updatedAt}</div>
+          ) : (
+            ""
+          )}
           <div>
             <button
               className=" bg-blue-500 text-white w-1/2"

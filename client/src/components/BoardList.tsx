@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Board } from "../types";
+import { Board, Boards } from "../types";
 import BoardItem from "./BoardItem";
 import { getBoardList } from "../api/boardApi";
 import BoardSearch from "./BoardSearch";
 import Filter from "./Filter";
 
 const BoardList = () => {
-  const [boards, setBoards] = useState<Board[]>([]);
+  const [boards, setBoards] = useState<Boards>([]);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
